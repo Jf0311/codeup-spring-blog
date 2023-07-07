@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Roll Dice Result</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+
+<style>
+  h1{
+    font-family: "ui-rounded";
+    display: flex;
+  }
+  body {
+    background-color: lightblue; /* Change this color to your desired color */
+    font-size: xx-large;
+  }
+</style>
+<h1>Roll Dice Result</h1>
+<p>Random number rolled: <span th:text="${diceRoll}"></span></p>
+<p>Your guess: <span th:text="${guess}"></span></p>
+<p><span th:text="${message}"></span></p>
+<p><a th:href="@{/roll-dice}">Guess again</a></p>
+</body>
+</html>

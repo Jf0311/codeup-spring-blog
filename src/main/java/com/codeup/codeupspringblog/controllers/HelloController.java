@@ -2,19 +2,25 @@ package com.codeup.codeupspringblog.controllers;
 
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class HelloController {
-    /*
-    /hello ->Hello World
-    /hello? name = bob Hello , bob
-    /hello/bob ->Hello bob!
-     */
-    @GetMapping("/hello")
+
+    @GetMapping("/")
     @ResponseBody
-    public String sayHello(){
-        return "<h1>Hello , World!</h1>";
+    public String home() {
+        return "Home!";
     }
+
+    @GetMapping("/hello/{name}")
+    public String sayHello(@PathVariable String name, Model model) {
+        model.addAttribute("name", name);
+        return "hello";
+    }
+
+
+
+
 }
