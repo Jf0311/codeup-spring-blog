@@ -1,6 +1,7 @@
 package com.codeup.codeupspringblog.controllers;
 
 import com.codeup.codeupspringblog.models.Dog;
+import com.codeup.codeupspringblog.models.EmailService;
 import com.codeup.codeupspringblog.repositories.DogRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @RequestMapping("/dogs")
 public class DogController {
     private DogRepository dogDao;
+private EmailService emailService;
 
     @GetMapping
     @ResponseBody
@@ -45,19 +47,20 @@ public class DogController {
         return "/dogs/create";
     }
 
-    @PostMapping("/create")
-    @ResponseBody
-    public String create(@RequestParam Long id
-            , @RequestParam String dogName
-            , @RequestParam int age
-            , @RequestParam String ownerName) {
-        System.out.printf("%d %s %d %s\n", id, dogName, age, ownerName);
-//        Dog dog = new Dog(id, dogName, age, ownerName);
-
+//    @PostMapping("/create")
+//    @ResponseBody
+//    public String create(@RequestParam Long id
+//            , @RequestParam String dogName
+//            , @RequestParam int age
+//            , @RequestParam String ownerName) {
+//        System.out.printf("%d %s %d %s\n", id, dogName, age, ownerName);
+//        Dog dog = new Dog(id, dogName, age);
+//        emailService.prepareAndSend(dog,"Hello Doggy","Your dog name is " + dog.getName());
+//
 //        dogDao.save(dog);
-
-        return "dog created???";
-    }
+//
+//        return "dog created???";
+//    }
 
     @GetMapping("/{id}/delete")
     @ResponseBody

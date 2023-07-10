@@ -6,7 +6,6 @@ import lombok.*;
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -24,8 +23,17 @@ public class Dog {
     @Column(nullable = false)
     private int age;
 
+    private String Email;
+
     @ManyToOne
     private DogOwner owner;
+
+    public Dog(long id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+
+    }
 
     // insert M:M relationship with toys here
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
@@ -35,4 +43,6 @@ public class Dog {
             inverseJoinColumns = {@JoinColumn(name = "toy_id")}
     )
     private List<Toy> toys;
-}
+
+
+    }

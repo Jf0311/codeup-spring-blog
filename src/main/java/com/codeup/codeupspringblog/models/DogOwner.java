@@ -31,4 +31,8 @@ public class DogOwner {
         }
         return str;
     }
+
+    public String getEmail() {
+        return null;
+    }
 }

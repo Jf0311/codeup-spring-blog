@@ -60,6 +60,19 @@ public class PostController {
         post.setTitle(title);
         post.setBody(body);
 
+        //@PostMapping("/create")
+        //    @ResponseBody
+        //    public String create(@RequestParam Long id
+        //            , @RequestParam String dogName
+        //            , @RequestParam int age
+        //            , @RequestParam String ownerName) {
+        //        System.out.printf("%d %s %d %s\n", id, dogName, age, ownerName);
+        //        Dog dog = new Dog(id, dogName, age);
+        //        emailService.prepareAndSend(dog,"Hello Doggy","Your dog name is " + dog.getName());
+        //
+        //        dogDao.save(dog);
+        //
+        //        return "dog created???";
         // Assign a user to the post
         List<User> users = userRepository.findAll();
         if (!users.isEmpty()) {
