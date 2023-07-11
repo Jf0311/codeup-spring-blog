@@ -12,24 +12,30 @@ import java.util.List;
 @ToString
 
 @Entity
-@Table (name = "Users_01")
+@Table(name = "blog_users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "User name")
-    private String name;
+    @Column(nullable = false)
+    private String username;
 
-
-    @Column(name = "email")
+    @Column(nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @Column(nullable = false)
     private String password;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "creator")
     private List<Post> posts;
 
 
+    public User(User copy) {
+        id = copy.id; // This line is SUPER important! Many things won't work if it's absent
+        email = copy.email;
+        username = copy.username;
+        password = copy.password;
+    }
 
 }

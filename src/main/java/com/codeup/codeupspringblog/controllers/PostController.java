@@ -1,5 +1,6 @@
 package com.codeup.codeupspringblog.controllers;
 
+import com.codeup.codeupspringblog.models.EmailService;
 import com.codeup.codeupspringblog.models.Post;
 import com.codeup.codeupspringblog.models.User;
 import com.codeup.codeupspringblog.repositories.PostRepository;
@@ -14,77 +15,57 @@ import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
+
 @Controller
 @RequestMapping("/posts")
 public class PostController {
-    private final PostRepository postDao;
-    private final UserRepository userRepository;
+    private PostRepository postDao;
+    private UserRepository userDao;
+    private EmailService emailService;
 
     @GetMapping("")
-    public String posts(Model model) {
+    public String posts(Model model){
         List<Post> posts = postDao.findAll();
-        List<User> users = userRepository.findAll();
 
-        model.addAttribute("posts", posts);
-        model.addAttribute("users", users);
-
-        return "/posts/show";
+        model.addAttribute("posts",posts);
+        return "/posts/index";
     }
 
     @GetMapping("/{id}")
-    public String showSinglePost(@PathVariable Long id, Model model) {
+    public String showSinglePost(@PathVariable Long id, Model model){
+        // find the desired post in the db
         Optional<Post> optionalPost = postDao.findById(id);
-        if (optionalPost.isEmpty()) {
+        if(optionalPost.isEmpty()) {
             System.out.printf("Post with id " + id + " not found!");
             return "home";
         }
 
-        Post post = optionalPost.get();
-        User user = post.getUser();
-
-        model.addAttribute("post", post);
-        model.addAttribute("userEmail", user != null ? user.getEmail() : null);
-
-        return "/posts/index";
+        // if we get here, then we found the post. so just open up the optional
+        model.addAttribute("post", optionalPost.get());
+        return "/posts/show";
     }
 
-
     @GetMapping("/create")
-    public String showCreate() {
+    public String showCreate(Model model) {
+        model.addAttribute("newPost", new Post());
         return "/posts/create";
     }
 
     @PostMapping("/create")
-    public String doCreate(@RequestParam String title, @RequestParam String body) {
-        Post post = new Post();
-        post.setTitle(title);
-        post.setBody(body);
+    public String doCreate(@ModelAttribute Post post) {
 
-        //@PostMapping("/create")
-        //    @ResponseBody
-        //    public String create(@RequestParam Long id
-        //            , @RequestParam String dogName
-        //            , @RequestParam int age
-        //            , @RequestParam String ownerName) {
-        //        System.out.printf("%d %s %d %s\n", id, dogName, age, ownerName);
-        //        Dog dog = new Dog(id, dogName, age);
-        //        emailService.prepareAndSend(dog,"Hello Doggy","Your dog name is " + dog.getName());
-        //
-        //        dogDao.save(dog);
-        //
-        //        return "dog created???";
-        // Assign a user to the post
-        List<User> users = userRepository.findAll();
-        if (!users.isEmpty()) {
-            User user = users.get(0); // Assign the first user, you can change the logic as needed
-            post.setUser(user);
-        }
-
+        // TODO: use user id 1 for now. change later to currently logged in user
+        User loggedInUser = userDao.findById(1L).get();
+        post.setCreator(loggedInUser);
         postDao.save(post);
 
         return "redirect:/posts";
     }
 
-
-    // Add other methods and functionality as needed
+    @GetMapping("/{id}/edit")
+    public String showEdit(@PathVariable Long id, Model model) {
+        Post postToEdit = postDao.getReferenceById(id);
+        model.addAttribute("newPost", postToEdit);
+        return "/posts/create";
+    }
 }

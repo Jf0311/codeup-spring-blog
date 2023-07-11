@@ -19,7 +19,7 @@ public class EmailService {
     public void prepareAndSend(Post post, String subject, String body) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom(from);
-        msg.setTo("josephkfuentes@gmail.com");
+        msg.setTo(post.getCreator().getEmail());
         msg.setSubject(subject);
         msg.setText(body);
 
@@ -31,23 +31,5 @@ public class EmailService {
             System.err.println(ex.getMessage());
         }
     }
-
-//    public void prepareAndSend(Dog dog, String subject, String body) {
-//        SimpleMailMessage msg = new SimpleMailMessage();
-//        msg.setFrom(from);
-//        msg.setTo("josephkfuentes@gmail.com");
-//        msg.setSubject(subject);
-//        msg.setText(body);
-//
-//        try{
-//            this.emailSender.send(msg);
-//        }
-//        catch (MailException ex) {
-//            // simply log it and go on...
-//            System.err.println(ex.getMessage());
-//        }
-//    }
-
-
 }
 
