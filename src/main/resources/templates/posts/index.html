@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="partials/header :: head" />
 <body>
-<h1 th:text="${post.title}"></h1>
-<h1 th:text="${post.body}"></h1>
-<p>Created by: <span th:text="${userEmail}"></span></p>
+<nav th:replace="partials/navbar :: navbar" />
+<div th:each="post : ${posts}">
+  <h3 th:text="${post.title}"></h3>
+  <p th:text="${post.body}"></p>
+  <div th:if="${message}" class="alert alert-danger" role="alert">
+    <span th:text="${message}"></span>
+  </div>
+</div>
+<footer th:replace="partials/footer :: footer"></footer>
+
 </body>
 </html>

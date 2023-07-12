@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,20 +31,18 @@ public class PostController {
         model.addAttribute("posts",posts);
         return "/posts/index";
     }
-
     @GetMapping("/{id}")
-    public String showSinglePost(@PathVariable Long id, Model model){
-        // find the desired post in the db
+    public String showSinglePost(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<Post> optionalPost = postDao.findById(id);
-        if(optionalPost.isEmpty()) {
-            System.out.printf("Post with id " + id + " not found!");
-            return "home";
+        if (optionalPost.isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "The post does not exist.");
+            return "redirect:/posts";
         }
 
-        // if we get here, then we found the post. so just open up the optional
         model.addAttribute("post", optionalPost.get());
         return "/posts/show";
     }
+
 
     @GetMapping("/create")
     public String showCreate(Model model) {
